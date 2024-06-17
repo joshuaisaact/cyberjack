@@ -1,4 +1,4 @@
-This is a project to text my HTML, CSS and JQuery skills. 
+This is a project to test my HTML, CSS and JQuery skills. 
 
 The task is to create a simple Blackjack game, where you play the computer one vs one, without betting.
 
