@@ -5,6 +5,8 @@ $(document).ready(() => {
     const deck = []
     let playerHand = []
     let dealerHand = []
+    let playerScore = 0
+    let dealerScore = 0
     
     function deckCreate () {
         for (let i = 0; i < suit.length; i++) {
@@ -24,10 +26,27 @@ $(document).ready(() => {
           }
     }
 
+    function calculateScore(hand) {
+        const cardValue = hand[0] 
+        if (cardValue[0] === "1" ||
+            cardValue[0] === "J" ||
+            cardValue[0] === "Q" ||
+            cardValue[0] === "K") {
+            return 10
+        } else if (cardValue === 'A') {
+            return 11
+        } else {
+            return Number(cardValue)
+        }
+    }
+
     function dealHand () {
         playerHand = deck.pop()
         dealerHand = deck.pop()
+        playerScore = calculateScore(playerHand)
+        dealerScore = calculateScore(dealerHand)
     }
+
 
     deckCreate();
     deckShuffle(deck);
@@ -48,7 +67,7 @@ $(document).ready(() => {
         dealHand();
         $('#introText, #deal').fadeOut("slow", () => {
             $('#handText')
-                .html(`You have ${playerHand} in your hand. <br><br> GIGABYE GARY places a ${dealerHand} face up on his side of the table`);
+                .html(`You have ${playerHand} in your hand. <br><br> GIGABYE GARY places a ${dealerHand} face up on his side of the table. <br> <br> Your score is ${playerScore}, GIGABYTE GARY's score is ${dealerScore}`);
 
         })
     })
