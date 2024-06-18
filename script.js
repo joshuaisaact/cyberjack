@@ -178,7 +178,7 @@ $(document).ready(() => {
                         $('#playAgain').fadeIn("slow")
                     });
 
-            } else if (dealerScore > playerScore && dealerScore <= 21) {
+            } else if (dealerScore > playerScore && dealerScore < 21) {
 
                 $('#loseText')
                     .html(`GIGABYTE GARY'S score is ${dealerScore}. <br><br> GIGABYTE GARY scored more than you! You LOSE. <br> <br> HAHAHA. You actually thought you could beat GIGABYTE GARY? What hubris! <br> <br> Better luck next time, PUNK.`)
