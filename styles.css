@@ -18,6 +18,10 @@ body {
     font-weight: 400;
   }
 
+div {
+    margin-top: 20px;
+}
+
 h1 {
     font-weight: lighter;
     font-size: 50px;
@@ -68,15 +72,11 @@ button {
   
   #newGame {
     position: absolute;
-    top: 85%; 
+    top: 75%; 
     left: 50%; 
     transform: translate(-50%, -50%);
   }
 
-  #dealer {
-    display: none;
-  }
-
-  #deal {
+  #dealer, #deal, #hitMe, #stick, #playAgain {
     display: none;
   }

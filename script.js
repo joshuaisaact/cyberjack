@@ -1,8 +1,8 @@
 $(document).ready(() => {
 
-    const suit = ['Hearts', 'Clubs', 'Diamonds', 'Spaces']
+    const suit = ['Hearts', 'Clubs', 'Diamonds', 'Spades']
     const rank = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King', 'Ace']
-    const deck = []
+    let deck = []
     let playerHand = []
     let dealerHand = []
     let playerScore = 0
@@ -19,32 +19,65 @@ $(document).ready(() => {
 /* Fisher-Yates algorithmic shuffle taken from https://dev.to/codebubb/how-to-shuffle-an-array-in-javascript-2ikj */
     function deckShuffle (arr) {
         for (let i = arr.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            const temp = arr[i];
+            let j = Math.floor(Math.random() * (i + 1));
+            let temp = arr[i];
             arr[i] = arr[j];
             arr[j] = temp;
           }
     }
 
     function calculateScore(hand) {
-        const cardValue = hand[0] 
-        if (cardValue[0] === "1" ||
-            cardValue[0] === "J" ||
-            cardValue[0] === "Q" ||
-            cardValue[0] === "K") {
-            return 10
-        } else if (cardValue === 'A') {
-            return 11
-        } else {
-            return Number(cardValue)
+        let score = 0
+        let aces = 0
+
+        for (let i = 0; i < hand.length; i++) {
+            if (score < 21) {
+                if (hand[i][0] === "1" ||
+                    hand[i][0] === "J" ||
+                    hand[i][0] === "Q" ||
+                    hand[i][0] === "K") {
+                    score += 10;
+                } else if (hand[i][0] === 'A') {
+                    score += 11
+                    aces += 1
+                } else {
+                    score += Number(hand[i][0])
+                }
+            }
         }
+        
+        while (score > 21 && aces > 0) {
+            score -= 10;
+            aces -= 1;
+        }
+        return score;
     }
 
     function dealHand () {
-        playerHand = deck.pop()
-        dealerHand = deck.pop()
+        playerHand.push(deck.pop());
+        dealerHand.push(deck.pop());
         playerScore = calculateScore(playerHand)
         dealerScore = calculateScore(dealerHand)
+    }
+
+    function addCard (hand, score) {
+        let newCard = deck.pop();
+        hand.push(newCard);
+        score = calculateScore(hand)
+        console.log("Player's Hand:", playerHand, "Player's Score:", playerScore)
+        console.log("Dealer's Hand:", dealerHand, "Dealer's Score:", dealerScore)
+        return score;
+    }
+
+    function resetGame () {
+        deck = [];
+        playerHand = [];
+        dealerHand = [];
+        playerScore = 0;
+        dealerScore = 0
+        deckCreate();
+        deckShuffle(deck);
+        dealHand();
     }
 
 
@@ -55,7 +88,7 @@ $(document).ready(() => {
         $('#title, #newGame').fadeOut("slow", () => {
             $('#dealer').fadeIn("slow", () => {
                 $('#introText')
-                    .html("<br>Welcome to the Binary Bluff Casino, MEAT SACK. <br> <br> Think you got what it takes to take on GIGABYTE GARY? <br> <br> You look like you've never even played CYBERJACK before!")
+                    .html("<br>Welcome to the BINARY BLUFF CASINO, meat sack. <br> <br> Think you got what it takes to take on GIGABYTE GARY? <br> <br> You look like you've never even played CYBERJACK before!")
                     .fadeIn("slow", () => {
                         $('#deal').fadeIn("slow")
                     });
@@ -67,9 +100,91 @@ $(document).ready(() => {
         dealHand();
         $('#introText, #deal').fadeOut("slow", () => {
             $('#handText')
-                .html(`You have ${playerHand} in your hand. <br><br> GIGABYE GARY places a ${dealerHand} face up on his side of the table. <br> <br> Your score is ${playerScore}, GIGABYTE GARY's score is ${dealerScore}`);
-
+                .html(`You have ${playerHand} in your hand. <br><br> GIGABYE GARY places a ${dealerHand} face up on his side of the table. <br> <br> Your score is ${playerScore}, GIGABYTE GARY's score is ${dealerScore}`)
+                .fadeIn("slow", () => {
+                    $('#hitMe, #stick').fadeIn("slow")
+                })
         })
-    })
+    });
+
+    $('#hitMe').on('click', () => {
+
+        playerScore = addCard(playerHand, playerScore);
+
+        $('#handText').fadeOut("slow", () => {
+
+            if (playerScore === 21) {
+
+                $('#hitMe, #stick').fadeOut("fast", () => {
+                    $('#winText')
+                    .html(`Your score is ${playerScore}. You WIN. <br> <br> GAHHHH!!! HOW COULD THIS BE! Nobody has ever beaten GIGABYTE GARY! <br> <br> You must be cheating! Let's play again!`)
+                    .fadeIn("slow", () => {
+                        $('#playAgain').fadeIn("slow")
+                    })
+                })
+
+            } else if (playerScore > 21) {
+
+                $('#hitMe, #stick').fadeOut("fast", () => {
+                    $('#loseText')
+                        .html(`Your score is ${playerScore}. You are BUST. <br> <br> HAHAHA. You actually thought you could beat GIGABYTE GARY? What hubris! <br> <br> Better luck next time, PUNK.`)
+                        .fadeIn("slow", () => {
+                            $('#playAgain').fadeIn("slow")
+                        })
+                })
+            } else {
+
+                $('#handText').html(`You have ${playerHand.join(', ')} in your hand. <br><br> Your score is ${playerScore}`).fadeIn("slow");
+            }
+        });
+    });
+
+    $('#stick').on('click', () => {
+        
+        dealerScore = addCard(dealerHand, dealerScore);
+
+        $('#handText, #hitMe, #stick').fadeOut("slow", () => {
+
+            if (dealerScore === 21) {
+                $('#loseText')
+                    .html(`GIGABYTE GARY scored CYBERJACK. You LOSE. <br> <br> HAHAHA. You actually thought you could beat GIGABYTE GARY? What hubris! <br> <br> Better luck next time, PUNK.`)
+                    .fadeIn("slow", () => {
+                        $('#playAgain').fadeIn("slow")
+                    });
+               
+            } else if (dealerScore > playerScore && dealerScore < 21) {
+
+                 $('#loseText')
+                    .html(`GIGABYTE GARY scored closer to 21. You LOSE. <br> <br> HAHAHA. You actually thought you could beat GIGABYTE GARY? What hubris! <br> <br> Better luck next time, PUNK.`)
+                    .fadeIn("slow", () => {
+                        $('#playAgain').fadeIn("slow")
+                    });
+
+            } else if (dealerScore > 21) {
+
+                $('#winText')
+                .html(`GARY'S score is ${dealerScore}. Gary is BUST. You WIN. <br> <br> GAHHHH!!! HOW COULD THIS BE! Nobody has ever beaten GIGABYTE GARY! <br> <br> You must be cheating! Let's play again!`)
+                .fadeIn("slow", () => {
+                    $('#playAgain').fadeIn("slow")
+                });
+
+            } else {
+                dealerScore = addCard(dealerHand, dealerScore)
+                $('#handText').html(`GARY has ${dealerHand.join(', ')} in his hand. <br> His score is ${dealerScore}`).fadeIn("slow");
+            }
+        });
+    });
+
+    $('#playAgain').on('click', () => {
+        resetGame();
+
+        $('#winText, #loseText, #playAgain').fadeOut("fast", () => {
+            $('#handText')
+                .html(`You have ${playerHand} in your hand. <br><br> GIGABYE GARY places a ${dealerHand} face up on his side of the table. <br> <br> Your score is ${playerScore}, GIGABYTE GARY's score is ${dealerScore}`)
+                .fadeIn("slow", () => {
+                    $('#hitMe, #stick').fadeIn("slow")
+                })
+        })
+    });
 
 });
