@@ -143,14 +143,14 @@ $(document).ready(() => {
 
                 $('#hitMe, #stick').fadeOut("fast", () => {
                     $('#loseText')
-                        .html(`Your score is ${playerScore}. You are BUST. <br> <br> HAHAHA. You actually thought you could beat GIGABYTE GARY? What hubris! <br> <br> Better luck next time, PUNK.`)
+                        .html(`Your score is ${playerScore}. You are BUST. <br> <br> "HAHAHA. You actually thought you could beat GIGABYTE GARY? What hubris!" <br> <br> "Better luck next time, PUNK."`)
                         .fadeIn("slow", () => {
                             $('#playAgain').fadeIn("slow")
                         })
                 })
             } else {
 
-                $('#handText').html(`You have ${playerHand.join(', ')} in your hand. <br><br> Your score is ${playerScore}`).fadeIn("slow");
+                $('#handText').html(`You have ${playerHand.join(', ')} in your hand. <br><br> Your score is ${playerScore}, GIGABYTE GARY's score is ${dealerScore}`).fadeIn("slow");
             }
         });
     });
