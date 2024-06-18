@@ -2,11 +2,12 @@
     font-family: 'Pixelify';
     src: url('./resources/PixelifySans-VariableFont_wght.ttf') format('truetype'),
          url('./resources/PixelifySans-Regular.ttf') format('truetype');
-    
+    font-family: 'VT323';
+    src: url('./resources/VT323-Regular.ttf') format('truetype');
 }
 
 body {
-    font-family: 'Pixelify', 'Courier New', Courier, monospace;
+    font-family: 'VT323', 'Pixelify', 'Courier New', Courier, monospace;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -44,11 +45,11 @@ img {
 }
 
 button {
-    font-family: 'Pixelify', 'Courier New', Courier, monospace;
+    font-family: 'VT323','Pixelify', 'Courier New', Courier, monospace;
     padding: 40px;
     margin-top: 20px;
     font-size: 30px;
-    letter-spacing: 4px;
+    letter-spacing: 2px;
     background-color: #000000;
     color: rgb(255, 255, 255);
     border: 2px solid #ffffff;
