@@ -31,25 +31,25 @@ $(document).ready(() => {
         let aces = 0
 
         for (let i = 0; i < hand.length; i++) {
-            if (score < 21) {
-                if (hand[i][0] === "1" ||
-                    hand[i][0] === "J" ||
-                    hand[i][0] === "Q" ||
-                    hand[i][0] === "K") {
-                    score += 10;
-                } else if (hand[i][0] === 'A') {
-                    score += 11
-                    aces += 1
-                } else {
+    
+            if (hand[i][0] === "1" ||
+                hand[i][0] === "J" ||
+                hand[i][0] === "Q" ||
+                hand[i][0] === "K") {
+                score += 10;
+            } else if (hand[i][0] === 'A') {
+                score += 11;
+                aces += 1;
+            } else {
                     score += Number(hand[i][0])
                 }
-            }
         }
         
         while (score > 21 && aces > 0) {
             score -= 10;
             aces -= 1;
         }
+
         return score;
     }
 
@@ -72,10 +72,25 @@ $(document).ready(() => {
         playerHand = [];
         dealerHand = [];
         playerScore = 0;
-        dealerScore = 0
+        dealerScore = 0;
+        $("#playerHand").empty();
+        $("#dealerHand").empty();
         deckCreate();
         deckShuffle(deck);
         dealHand();
+        displayCard(playerHand, '#playerHand');
+        displayCard(dealerHand, '#dealerHand');
+    }
+    
+    function displayCard (hand, id) {
+
+        let $id = $(id);
+        $id.empty();
+
+        for (let c = 0; c < hand.length; c++) {
+            let cardImages = $('<img>').attr('src', 'resources/cards/' + hand[c] + '.png');
+            $id.append(cardImages)
+        }
     }
 
 
@@ -96,6 +111,8 @@ $(document).ready(() => {
 
     $('#deal').on('click', () => {
         dealHand();
+        displayCard(playerHand, '#playerHand');
+        displayCard(dealerHand, '#dealerHand');
         $('#introText, #deal').fadeOut("slow", () => {
             $('#handText')
                 .html(`You have ${playerHand} in your hand. <br><br> GIGABYE GARY places a ${dealerHand} face up on his side of the table. <br> <br> Your score is ${playerScore}, GIGABYTE GARY's score is ${dealerScore}`)
@@ -108,6 +125,7 @@ $(document).ready(() => {
     $('#hitMe').on('click', () => {
 
         playerScore = addCard(playerHand, playerScore);
+        displayCard(playerHand, '#playerHand');
 
         $('#handText').fadeOut("slow", () => {
 
@@ -140,6 +158,7 @@ $(document).ready(() => {
     $('#stick').on('click', () => {
         
         dealerScore = addCard(dealerHand, dealerScore);
+        displayCard(dealerHand, '#dealerHand');
         $('#handText').html(`GARY has ${dealerHand.join(', ')} in his hand. <br> His score is ${dealerScore}`).fadeIn("slow");
 
         $('#handText, #hitMe, #stick').fadeOut("slow", () => {
@@ -149,7 +168,7 @@ $(document).ready(() => {
                 .html(`GARY'S score is ${dealerScore}. Gary is BUST. You WIN. <br> <br> GAHHHH!!! HOW COULD THIS BE! Nobody has ever beaten GIGABYTE GARY! <br> <br> You must be cheating! Let's play again!`)
                 .fadeIn("slow", () => {
                     $('#playAgain').fadeIn("slow")
-                    });
+                });
                
             } else if (dealerScore === 21) {
 
@@ -162,18 +181,20 @@ $(document).ready(() => {
             } else if (dealerScore > playerScore && dealerScore <= 21) {
 
                 $('#loseText')
-                    .html(`GIGABYTE GARY'S score is ${dealerScore}. <br><br> GIGABYTE GARY scored closer to 21. You LOSE. <br> <br> HAHAHA. You actually thought you could beat GIGABYTE GARY? What hubris! <br> <br> Better luck next time, PUNK.`)
+                    .html(`GIGABYTE GARY'S score is ${dealerScore}. <br><br> GIGABYTE GARY scored more than you! You LOSE. <br> <br> HAHAHA. You actually thought you could beat GIGABYTE GARY? What hubris! <br> <br> Better luck next time, PUNK.`)
                     .fadeIn("slow", () => {
                         $('#playAgain').fadeIn("slow")
                 });
 
             } else {
                 dealerScore = addCard(dealerHand, dealerScore)
+                displayCard(dealerHand, '#dealerHand');
             }
         });
     });
 
     $('#playAgain').on('click', () => {
+
         resetGame();
 
         $('#winText, #loseText, #playAgain').fadeOut("fast", () => {
