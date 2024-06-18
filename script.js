@@ -140,35 +140,35 @@ $(document).ready(() => {
     $('#stick').on('click', () => {
         
         dealerScore = addCard(dealerHand, dealerScore);
+        $('#handText').html(`GARY has ${dealerHand.join(', ')} in his hand. <br> His score is ${dealerScore}`).fadeIn("slow");
 
         $('#handText, #hitMe, #stick').fadeOut("slow", () => {
 
-            if (dealerScore === 21) {
+            if (dealerScore > 21) {
+                $('#winText')
+                .html(`GARY'S score is ${dealerScore}. Gary is BUST. You WIN. <br> <br> GAHHHH!!! HOW COULD THIS BE! Nobody has ever beaten GIGABYTE GARY! <br> <br> You must be cheating! Let's play again!`)
+                .fadeIn("slow", () => {
+                    $('#playAgain').fadeIn("slow")
+                    });
+               
+            } else if (dealerScore === 21) {
+
                 $('#loseText')
                     .html(`GIGABYTE GARY scored CYBERJACK. You LOSE. <br> <br> HAHAHA. You actually thought you could beat GIGABYTE GARY? What hubris! <br> <br> Better luck next time, PUNK.`)
                     .fadeIn("slow", () => {
                         $('#playAgain').fadeIn("slow")
                     });
-               
-            } else if (dealerScore > playerScore && dealerScore < 21) {
 
-                 $('#loseText')
-                    .html(`GIGABYTE GARY scored closer to 21. You LOSE. <br> <br> HAHAHA. You actually thought you could beat GIGABYTE GARY? What hubris! <br> <br> Better luck next time, PUNK.`)
+            } else if (dealerScore > playerScore && dealerScore <= 21) {
+
+                $('#loseText')
+                    .html(`GIGABYTE GARY'S score is ${dealerScore}. <br><br> GIGABYTE GARY scored closer to 21. You LOSE. <br> <br> HAHAHA. You actually thought you could beat GIGABYTE GARY? What hubris! <br> <br> Better luck next time, PUNK.`)
                     .fadeIn("slow", () => {
                         $('#playAgain').fadeIn("slow")
-                    });
-
-            } else if (dealerScore > 21) {
-
-                $('#winText')
-                .html(`GARY'S score is ${dealerScore}. Gary is BUST. You WIN. <br> <br> GAHHHH!!! HOW COULD THIS BE! Nobody has ever beaten GIGABYTE GARY! <br> <br> You must be cheating! Let's play again!`)
-                .fadeIn("slow", () => {
-                    $('#playAgain').fadeIn("slow")
                 });
 
             } else {
                 dealerScore = addCard(dealerHand, dealerScore)
-                $('#handText').html(`GARY has ${dealerHand.join(', ')} in his hand. <br> His score is ${dealerScore}`).fadeIn("slow");
             }
         });
     });
