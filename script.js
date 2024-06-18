@@ -115,7 +115,7 @@ $(document).ready(() => {
         displayCard(dealerHand, '#dealerHand');
         $('#introText, #deal').fadeOut("slow", () => {
             $('#handText')
-                .html(`You have ${playerHand} in your hand. <br><br> GIGABYE GARY places a ${dealerHand} face up on his side of the table. <br> <br> Your score is ${playerScore}, GIGABYTE GARY's score is ${dealerScore}`)
+                .html(`You draw ${playerHand}. <br><br> GIGABYE GARY draws ${dealerHand}. <br> <br> Your score: ${playerScore} <br> GIGABYTE GARY's score: ${dealerScore}`)
                 .fadeIn("slow", () => {
                     $('#hitMe, #stick').fadeIn("slow")
                 })
@@ -150,7 +150,7 @@ $(document).ready(() => {
                 })
             } else {
 
-                $('#handText').html(`You have ${playerHand.join(', ')} in your hand. <br><br> Your score is ${playerScore}, GIGABYTE GARY's score is ${dealerScore}`).fadeIn("slow");
+                $('#handText').html(`You have ${playerHand.join(', ')} in your hand. <br><br> Your score: ${playerScore} <br> GIGABYTE GARY's score: ${dealerScore}`).fadeIn("slow");
             }
         });
     });
