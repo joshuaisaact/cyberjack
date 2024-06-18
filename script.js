@@ -64,8 +64,6 @@ $(document).ready(() => {
         let newCard = deck.pop();
         hand.push(newCard);
         score = calculateScore(hand)
-        console.log("Player's Hand:", playerHand, "Player's Score:", playerScore)
-        console.log("Dealer's Hand:", dealerHand, "Dealer's Score:", dealerScore)
         return score;
     }
 
