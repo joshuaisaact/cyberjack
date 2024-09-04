@@ -38,6 +38,8 @@ The HTML structure is minimal, consisting of a few containers for the game eleme
 
 ## Installation & Setup
 
+It's playable via Github Pages: https://joshuaisaact.github.io/cyberjack/
+
 To run Cyberjack locally:
 
 1. Clone the repository:
